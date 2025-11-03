@@ -1,9 +1,9 @@
 import React from 'react';
-import { useAuth } from './AuthContext';
-import axios from 'axios'; // We will use the base axios, not the interceptor
+import { useAuth } from './useAuth.jsx'; // <-- IMPORT UPDATED
+import axios from 'axios';
 
 const PostCard = ({ post, onPostDeleted }) => {
-  const { user, token } = useAuth(); // Get the currently logged-in user and token
+  const { user, token } = useAuth();
 
   const isAuthor = user && user._id === post.authorId;
   const isAdmin = user && user.role === 'Admin';
@@ -15,10 +15,10 @@ const PostCard = ({ post, onPostDeleted }) => {
     try {
       await axios.delete(`http://localhost:5000/api/posts/${post._id}`, {
         headers: {
-          Authorization: `Bearer ${token}`, // We must provide the token
+          Authorization: `Bearer ${token}`,
         },
       });
-      onPostDeleted(); // Call the function from props to refresh the list
+      onPostDeleted(); // Refresh the post list
     } catch (error) {
       console.error('Error deleting post:', error);
       alert('Failed to delete post. You may not be authorized.');
@@ -33,7 +33,7 @@ const PostCard = ({ post, onPostDeleted }) => {
       
       {canModify && (
         <div className="post-actions">
-          <button>Edit</button>
+          <button>Edit</button> { /* Edit button is not implemented */ }
           <button onClick={handleDelete}>Delete</button>
         </div>
       )}
