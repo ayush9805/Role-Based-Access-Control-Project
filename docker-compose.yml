@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  mongo:
+    image: mongo:latest
+    container_name: rbac-mongo-db
+    ports:
+      - "27017:27017" # Connects your local port 27017 to the container
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
