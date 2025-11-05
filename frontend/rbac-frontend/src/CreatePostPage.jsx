@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from './useAuth.jsx'; // <-- IMPORT UPDATED
+import { useAuth } from './useAuth.jsx'; 
 
 const CreatePostPage = () => {
-  const { api } = useAuth(); 
+  const { api } = useAuth(); // This is correct
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -12,6 +12,7 @@ const CreatePostPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // This API path '/posts' is correct
       await api.post('/posts', { title, content });
       navigate('/'); // Go home to see the new post
     } catch (err) {
@@ -21,29 +22,42 @@ const CreatePostPage = () => {
   };
 
   return (
-    <div>
-      <h1>Create New Post</h1>
-      <p>You can only see this page if you are an Editor or Admin.</p>
+    // --- STYLING APPLIED ---
+    <div className="post-form-container">
+      <h2>Create New Post</h2>
       <form onSubmit={handleSubmit}>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <div>
-          <label>Title:</label>
+        
+        {/* Use the standard error class */}
+        {error && <p className="login-error">{error}</p>}
+        
+        {/* Use the standard form-group class */}
+        <div className="form-group">
+          <label htmlFor="title">Title:</label>
           <input 
-            type="text" 
+            type="text"
+            id="title" // Added for label
             value={title} 
             onChange={(e) => setTitle(e.target.value)} 
             required 
           />
         </div>
-        <div>
-          <label>Content:</label>
+        
+        {/* Use the standard form-group class */}
+        <div className="form-group">
+          <label htmlFor="content">Content:</label>
           <textarea 
+            id="content" // Added for label
             value={content} 
             onChange={(e) => setContent(e.target.value)} 
+            rows="10"
             required 
           />
         </div>
-        <button type="submit">Create Post</button>
+        
+        {/* Use the standard button class */}
+        <button type="submit" className="login-button">
+          Create Post
+        </button>
       </form>
     </div>
   );
