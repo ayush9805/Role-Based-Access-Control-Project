@@ -1,0 +1,28 @@
+# --- Stage 1: Build the React App ---
+FROM node:18-alpine AS builder
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files and install dependencies
+COPY package*.json ./
+RUN npm install
+
+# Copy all source code
+COPY . .
+
+# Build the static files (creates a 'dist' folder)
+RUN npm run build
+
+# --- Stage 2: Serve the Static Files ---
+# Use a lightweight web server
+FROM nginx:stable-alpine
+
+# Copy the built files from Stage 1 into the Nginx server's web directory
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Tell Docker the container listens on port 80 (Nginx's default)
+EXPOSE 80
+
+# The command to start the Nginx server
+CMD ["nginx", "-g", "daemon off;"]

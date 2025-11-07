@@ -1,15 +1,14 @@
 import User from '../models/user.model.js';
 import jwt from 'jsonwebtoken';
 
-// Helper to generate a token
+
 const generateToken = (id, role) => {
   return jwt.sign({ id, role }, process.env.JWT_SECRET, {
     expiresIn: '1d',
   });
 };
 
-// @desc    Register a new user
-// @route   POST /api/auth/register
+
 export const registerUser = async (req, res) => {
   const { username, password, role } = req.body;
 
